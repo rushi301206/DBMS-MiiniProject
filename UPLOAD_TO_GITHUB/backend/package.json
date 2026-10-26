@@ -1,0 +1,25 @@
+{
+  "name": "spit-college-event-management-backend",
+  "version": "1.0.0",
+  "description": "Backend API for SPIT College Clubs & Committees Event Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "setup-db": "node setup_db.js"
+  },
+  "keywords": [
+    "dbms",
+    "spit",
+    "mysql",
+    "express",
+    "event-management"
+  ],
+  "author": "Rushikesh Patil & Vighnesh Pawar",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0"
+  }
+}

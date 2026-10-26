@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPIT | College Events Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- ====================================================================
+         PRIMARY INITIAL LOGIN SCREEN (SHOWN FIRST ON SITE LOAD)
+         ==================================================================== -->
+    <div id="initialLoginGate" class="login-gate-screen">
+        <div class="login-gate-container">
+            <div class="login-gate-brand">
+                <img src="spit_logo.png" alt="SPIT Mumbai Logo" class="login-gate-logo">
+                <div class="login-gate-inst">Bharatiya Vidya Bhavan's Sardar Patel Institute of Technology</div>
+                <h1 class="login-gate-title">College Events Management Portal</h1>
+                <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: #e3efe7; color: #166534; padding: 0.35rem 0.9rem; border-radius: var(--radius-pill); font-size: 0.78rem; font-weight: 800; margin-top: 0.5rem;">
+                    <span>🔒</span>
+                    <span>Role-Based Campus Authentication Gate</span>
+                </div>
+            </div>
+
+            <div class="login-card-main">
+                <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.35rem;">Sign In to Your Account</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                    Please enter your campus credentials below. Your workspace will automatically adapt to your institutional authority.
+                </p>
+
+                <form id="initialLoginForm" onsubmit="handleInitialLoginSubmit(event)">
+                    <div class="login-form-group">
+                        <label class="form-label" style="font-weight: 700;">Username / Identifier (Email Address or Student Roll No) *</label>
+                        <input type="text" id="initLoginIdentifier" class="form-control" placeholder="e.g. principal@spit.ac.in, mihir.pukale@spit.ac.in, or 2023300001" required>
+                    </div>
+
+                    <div class="login-form-group" style="margin-top: 1rem;">
+                        <label class="form-label" style="font-weight: 700;">Password *</label>
+                        <input type="password" id="initLoginPassword" class="form-control" placeholder="Enter account password" required>
+                    </div>
+
+                    <div style="margin-top: 1.5rem;">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.8rem; font-size: 0.95rem; font-weight: 800; justify-content: center; gap: 0.5rem;">
+                            <span>Sign In & Open Dashboard</span>
+                            <span>→</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- DEMO CREDENTIALS SECTION IN BRACKETS (FOR PROJECT EVALUATION & PROFESSOR DEMO) -->
+                <div class="demo-credentials-wrap">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div>
+                            <h3 style="font-size: 0.92rem; font-weight: 800; color: var(--text-main); margin: 0;">⚡ Demo Credentials for Project Evaluation:</h3>
+                            <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+                                Click any bracketed credential box below to automatically fill & enter that user's customized interface:
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Tier 1: Deans & Principals -->
+                    <div class="demo-tier-block">
+                        <div class="demo-tier-title" style="color: #153e35;">
+                            <span>🏛️ Tier 1: Deans & Principals (Apex Governance)</span>
+                        </div>
+                        <div class="demo-cred-row">
+                            <button type="button" class="demo-cred-btn" onclick="quickFillAndLogin('principal@spit.ac.in', 'admin@123')">
+                                <span class="demo-bracket-box">[ Username: principal@spit.ac.in | Password: admin@123 ]</span>
+                                <span class="demo-persona-name">Dr. B. N. Chaudhari (Principal) →</span>
+                            </button>
+                            <button type="button" class="demo-cred-btn" onclick="quickFillAndLogin('dean.acad@spit.ac.in', 'dean@123')">
+                                <span class="demo-bracket-box">[ Username: dean.acad@spit.ac.in | Password: dean@123 ]</span>
+                                <span class="demo-persona-name">Dr. Y. S. Rao (Dean Academics) →</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tier 2: Faculty Mentors & Advisors -->
+                    <div class="demo-tier-block">
+                        <div class="demo-tier-title" style="color: #2b554b;">
+                            <span>👨‍🏫 Tier 2: Faculty Mentors & Advisors (Academic Oversight)</span>
+                        </div>
+                        <div class="demo-cred-row">
+                            <button type="button" class="demo-cred-btn" onclick="quickFillAndLogin('anand.godbole@spit.ac.in', 'faculty@123')">
+                                <span class="demo-bracket-box">[ Username: anand.godbole@spit.ac.in | Password: faculty@123 ]</span>
+                                <span class="demo-persona-name">Dr. Anand Godbole (Faculty Advisor) →</span>
+                            </button>
+                            <button type="button" class="demo-cred-btn" onclick="quickFillAndLogin('rajiv.mehta@spit.ac.in', 'mentor@123')">
+                                <span class="demo-bracket-box">[ Username: rajiv.mehta@spit.ac.in | Password: mentor@123 ]</span>
+                                <span class="demo-persona-name">Prof. Rajiv Mehta (Industry Mentor) →</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tier 3: Committee CPs & VCPs -->
+                    <div class="demo-tier-block">
+                        <div class="demo-tier-title" style="color: #c45d2c;">
+                            <span>🏆 Tier 3: Committee CPs & VCPs (Executive Committee Leadership)</span>
+                        </div>
+                        <div class="demo-cred-row">
+                            <button type="button" class="demo-cred-btn" onclick="quickFillAndLogin('mihir.pukale@spit.ac.in', 'acses@123')">
+                                <span class="demo-bracket-box">[ Username: mihir.pukale@spit.ac.in (or 2023300001) | Password: acses@123 ]</span>
+                                <span class="demo-persona-name">Mihir Pukale (ACSES CP) →</span>
+                            </button>
+                            <button type="button" class="demo-cred-btn" onclick="quickFillAndLogin('tanvi.shah@spit.ac.in', 'tanvi@123')">
+                                <span class="demo-bracket-box">[ Username: tanvi.shah@spit.ac.in (or 2023300012) | Password: tanvi@123 ]</span>
+                                <span class="demo-persona-name">Tanvi Shah (ACSES VCP) →</span>
+                            </button>
+                            <button type="button" class="demo-cred-btn" onclick="quickFillAndLogin('vighnesh.pawar@spit.ac.in', 'csi@123')">
+                                <span class="demo-bracket-box">[ Username: vighnesh.pawar@spit.ac.in (or 2025800098) | Password: csi@123 ]</span>
+                                <span class="demo-persona-name">Vighnesh Pawar (CSI CP) →</span>
+                            </button>
+                            <button type="button" class="demo-cred-btn" onclick="quickFillAndLogin('siddharth.nair@spit.ac.in', 'siddharth@123')">
+                                <span class="demo-bracket-box">[ Username: siddharth.nair@spit.ac.in (or 2023300045) | Password: siddharth@123 ]</span>
+                                <span class="demo-persona-name">Siddharth Nair (CSI VCP) →</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tier 4: Committee Members & Students -->
+                    <div class="demo-tier-block" style="margin-bottom: 0;">
+                        <div class="demo-tier-title" style="color: #4e6358;">
+                            <span>👥 Tier 4: Committee Members & General Students (Participation & Operations)</span>
+                        </div>
+                        <div class="demo-cred-row">
+                            <button type="button" class="demo-cred-btn" onclick="quickFillAndLogin('rushikesh.patil@spit.ac.in', 'rushikesh@123')">
+                                <span class="demo-bracket-box">[ Username: rushikesh.patil@spit.ac.in (or 2025800093) | Password: rushikesh@123 ]</span>
+                                <span class="demo-persona-name">Rushikesh Patil (Creatives Head) →</span>
+                            </button>
+                            <button type="button" class="demo-cred-btn" onclick="quickFillAndLogin('arjun.thakur@spit.ac.in', 'arjun@123')">
+                                <span class="demo-bracket-box">[ Username: arjun.thakur@spit.ac.in (or 2023300003) | Password: arjun@123 ]</span>
+                                <span class="demo-persona-name">Arjun Thakur (Secretary) →</span>
+                            </button>
+                            <button type="button" class="demo-cred-btn" onclick="quickFillAndLogin('priya.sharma@spit.ac.in', 'student@123')">
+                                <span class="demo-bracket-box">[ Username: priya.sharma@spit.ac.in (or 2023300088) | Password: student@123 ]</span>
+                                <span class="demo-persona-name">Priya Sharma (Student Attendee) →</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MAIN APP CONTAINER (SHOWN AFTER SUCCESSFUL LOGIN)
+         ==================================================================== -->
+    <div id="mainAppLayout" style="display: none;">
+
+    <!-- ====================================================================
+         TOP BRAND NAVIGATION BAR
+         ==================================================================== -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="brand">
+                <img src="spit_logo.png" alt="SPIT Mumbai Logo" class="brand-logo-img">
+                <div class="brand-info">
+                    <h1>College Events Management</h1>
+                    <p>Bharatiya Vidya Bhavan's Sardar Patel Institute of Technology</p>
+                </div>
+            </div>
+
+            <!-- User Persona Switcher, Role Gateway & Logout -->
+            <div class="nav-actions">
+                <button class="btn btn-secondary btn-sm" onclick="toggleGatewayView()" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; display: flex; align-items: center; gap: 0.35rem; font-weight: 800; border: 1.5px solid var(--primary); background: #eef5f1;" title="Switch Institutional Role Gateway">
+                    🏛️ <span>Role Gateway</span>
+                </button>
+
+                <button class="btn btn-secondary btn-sm" onclick="logoutCurrentUser()" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; display: flex; align-items: center; gap: 0.35rem; font-weight: 800; border-color: #dc2626; color: #b91c1c; background: #fff5f5;" title="Log out and return to Login Screen">
+                    🚪 <span>Log Out</span>
+                </button>
+
+                <div id="backendStatusIndicator" class="status-pill">
+                    <span id="statusDot" class="status-dot"></span>
+                    <span id="statusText">System Ready</span>
+                </div>
+
+                <div class="user-selector-card">
+                    <div id="currentUserAvatar" class="user-avatar">R</div>
+                    <div class="user-details">
+                        <div class="user-name-role">
+                            <span id="currentUserName">Rushikesh Patil</span>
+                            <span id="currentUserRole" class="badge badge-role">Student</span>
+                            <span id="currentUserTierBadge" class="badge badge-tier-member" style="font-size: 0.65rem; padding: 0.1rem 0.45rem;">Member</span>
+                            <span id="currentUserCpBadge" class="badge badge-club" style="display: none; font-size: 0.65rem; padding: 0.1rem 0.45rem;">🏆 CP/VCP</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.35rem; margin-top: 2px;">
+                            <label for="userSelectDropdown" style="font-size: 0.72rem; color: var(--text-muted);">Persona:</label>
+                            <select id="userSelectDropdown" class="user-select" onchange="switchCurrentUser(this.value)">
+                                <!-- Injected dynamically from data.js -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         NAVIGATION TABS (MINIMALIST LINE ICONS)
+         ==================================================================== -->
+    <nav class="nav-tabs-bar">
+        <div class="nav-tabs-container">
+            <button class="tab-btn active" data-tab="events" onclick="switchTab('events')">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>Events Hub</span>
+            </button>
+
+            <button class="tab-btn" data-tab="registrations" onclick="switchTab('registrations')">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path><line x1="13" y1="5" x2="13" y2="8"></line><line x1="13" y1="16" x2="13" y2="19"></line></svg>
+                <span>My Registrations</span>
+                <span id="tabBadgeRegistrations" class="tab-badge">0</span>
+            </button>
+
+            <button class="tab-btn" data-tab="clubs" onclick="switchTab('clubs')">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Clubs & Committees</span>
+            </button>
+
+            <button class="tab-btn" data-tab="users" onclick="switchTab('users')">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                <span>Users & Mentors</span>
+            </button>
+
+            <button class="tab-btn" data-tab="announcements" onclick="switchTab('announcements')">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h24s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                <span>Announcements</span>
+            </button>
+
+            <button class="tab-btn" data-tab="propose" onclick="switchTab('propose')">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                <span>Propose Event</span>
+            </button>
+
+            <button class="tab-btn" data-tab="approvals" onclick="switchTab('approvals')">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
+                <span>Approvals Desk</span>
+                <span id="tabBadgeApprovals" class="tab-badge">0</span>
+            </button>
+
+            <button class="tab-btn" data-tab="attendance" onclick="switchTab('attendance')">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                <span>Attendance Desk</span>
+            </button>
+
+            <button class="tab-btn" data-tab="analytics" onclick="switchTab('analytics')">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                <span>Analytics & Feedback</span>
+            </button>
+
+            <button class="tab-btn" data-tab="dbms_schema" onclick="switchTab('dbms_schema')">
+                <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                <span>DBMS 3NF Tables</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ====================================================================
+         MAIN APP CONTAINER
+         ==================================================================== -->
+    <main class="main-wrapper">
+
+        <!-- Institutional Role Gateway Landing Interface -->
+        <div id="landingGatewayContainer"></div>
+
+        <!-- Dynamic Tier Context Banner (Shown when inside a role's workspace) -->
+        <div id="activeTierBannerContainer"></div>
+
+        <!-- Top Summary Metrics Cards (Clean Minimalist Line Icons) -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
+                <div>
+                    <div id="metricTotalEvents" class="stat-value">6</div>
+                    <div class="stat-label">Total Events Scheduled</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon amber">
+                    <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+                <div>
+                    <div id="metricActiveClubs" class="stat-value">6</div>
+                    <div class="stat-label">Active Chapters & Clubs</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon sand">
+                    <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"></path><line x1="13" y1="5" x2="13" y2="8"></line><line x1="13" y1="11" x2="13" y2="13"></line><line x1="13" y1="16" x2="13" y2="19"></line></svg>
+                </div>
+                <div>
+                    <div id="metricMyRegistrations" class="stat-value">0</div>
+                    <div class="stat-label">My Event Registrations</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon moss">
+                    <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <div>
+                    <div id="metricPendingApprovals" class="stat-value">1</div>
+                    <div class="stat-label">Pending Faculty Approvals</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Interface Container -->
+        <div id="tabContentContainer">
+            <!-- Rendered by app.js based on active tab -->
+        </div>
+
+    </main>
+    </div> <!-- /#mainAppLayout -->
+
+    <!-- ====================================================================
+         MODAL 1: SUBMIT FEEDBACK (1:1 RELATIONSHIP WITH REGISTRATIONS)
+         ==================================================================== -->
+    <div id="feedbackModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title">Submit Event Feedback</h3>
+                    <p id="feedbackEventTitle" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Event</p>
+                </div>
+                <button class="modal-close" onclick="closeFeedbackModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Rating (1 to 5 Stars) *</label>
+                    <div id="starSelector" class="star-rating">
+                        <!-- Injected via app.js -->
+                    </div>
+                    <span class="form-help">Enforces CHECK constraint: rating BETWEEN 1 AND 5</span>
+                </div>
+
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label class="form-label">Participant Comments & Experience *</label>
+                    <textarea id="feedbackCommentInput" class="form-control" placeholder="Share your experience, workshop takeaways, speaker review, or areas for improvement..." rows="4"></textarea>
+                    <span class="form-help">Enforces UNIQUE(registration_id) - exactly 1 feedback per attendance record</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeFeedbackModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitFeedbackModal()">Submit Review</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL 2: POST CAMPUS NOTICE / ANNOUNCEMENT
+         ==================================================================== -->
+    <div id="announcementModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Post Committee Notice</h3>
+                <button class="modal-close" onclick="closeAnnouncementModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Publishing Organization *</label>
+                    <select id="announcementOrgSelect" class="form-control">
+                        <!-- Populated by app.js -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Notice Headline / Title *</label>
+                    <input type="text" id="announcementTitleInput" class="form-control" placeholder="e.g. Shark Tank Pitch Deck Deadline Extended" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Detailed Announcement *</label>
+                    <textarea id="announcementDescInput" class="form-control" placeholder="Provide event instructions, registration links, eligibility..." rows="4" required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeAnnouncementModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="submitNewAnnouncement()">Publish Notice</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL 0: USER AUTHENTICATION & LOGIN (WITH DEMO PERSONA QUICK-FILLS)
+         ==================================================================== -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 560px;">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title">SPIT Campus Authentication</h3>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Sign in with your Email / Roll No & Password</p>
+                </div>
+                <button class="modal-close" onclick="closeLoginModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm" onsubmit="submitLoginModal(event)">
+                    <div class="form-group">
+                        <label class="form-label">Email Address or Student Roll No *</label>
+                        <input type="text" id="loginIdentifierInput" class="form-control" placeholder="e.g. principal@spit.ac.in, mihir.pukale@spit.ac.in, or 2023300001" required>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 0.85rem;">
+                        <label class="form-label">Password *</label>
+                        <input type="password" id="loginPasswordInput" class="form-control" placeholder="Enter account password" required>
+                    </div>
+
+                    <div style="margin-top: 1.25rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+                        <button type="button" class="btn btn-secondary" onclick="closeLoginModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Sign In</button>
+                    </div>
+                </form>
+
+                <!-- Quick Viva Demo Logins Grouped by 4 Hierarchy Tiers -->
+                <div style="margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <h4 style="font-size: 0.86rem; font-weight: 800; color: var(--text-main); margin: 0;">⚡ 1-Click Demo Logins (Organized by 4 Tiers):</h4>
+                    </div>
+
+                    <!-- Tier 1: Deans & Principals -->
+                    <div style="font-size: 0.72rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.3rem;">
+                        <span>🏛️ Tier 1: Deans & Principals</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.85rem;">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillLogin(1, 'principal@spit.ac.in', 'admin@123')" style="justify-content: flex-start; text-align: left; padding: 0.45rem 0.65rem;">
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.8rem;">Dr. B. N. Chaudhari</div>
+                                <div style="font-size: 0.68rem; color: var(--text-muted);">Principal • Pass: admin@123</div>
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillLogin(8, 'dean.acad@spit.ac.in', 'dean@123')" style="justify-content: flex-start; text-align: left; padding: 0.45rem 0.65rem;">
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.8rem;">Dr. Y. S. Rao</div>
+                                <div style="font-size: 0.68rem; color: var(--text-muted);">Dean Academics • Pass: dean@123</div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Tier 2: Faculty Mentors -->
+                    <div style="font-size: 0.72rem; font-weight: 800; color: #2b554b; text-transform: uppercase; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.3rem;">
+                        <span>👨‍🏫 Tier 2: Faculty Mentors & Advisors</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.85rem;">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillLogin(2, 'anand.godbole@spit.ac.in', 'faculty@123')" style="justify-content: flex-start; text-align: left; padding: 0.45rem 0.65rem;">
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.8rem;">Dr. Anand Godbole</div>
+                                <div style="font-size: 0.68rem; color: var(--text-muted);">Faculty Advisor • Pass: faculty@123</div>
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillLogin(7, 'rajiv.mehta@spit.ac.in', 'mentor@123')" style="justify-content: flex-start; text-align: left; padding: 0.45rem 0.65rem;">
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.8rem;">Prof. Rajiv Mehta</div>
+                                <div style="font-size: 0.68rem; color: var(--text-muted);">Industry Mentor • Pass: mentor@123</div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Tier 3: Committee CPs & VCPs -->
+                    <div style="font-size: 0.72rem; font-weight: 800; color: var(--accent); text-transform: uppercase; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.3rem;">
+                        <span>🏆 Tier 3: Committee CPs & VCPs (ACSES & CSI)</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.85rem;">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillLogin(3, 'mihir.pukale@spit.ac.in', 'acses@123')" style="justify-content: flex-start; text-align: left; padding: 0.45rem 0.65rem; border: 1.5px solid var(--accent-light);">
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.8rem; color: var(--accent);">Mihir Pukale (CP)</div>
+                                <div style="font-size: 0.68rem; color: var(--text-muted);">ACSES CP • Pass: acses@123</div>
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillLogin(9, 'tanvi.shah@spit.ac.in', 'tanvi@123')" style="justify-content: flex-start; text-align: left; padding: 0.45rem 0.65rem; border: 1.5px solid var(--accent-light);">
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.8rem; color: var(--accent);">Tanvi Shah (VCP)</div>
+                                <div style="font-size: 0.68rem; color: var(--text-muted);">ACSES VCP • Pass: tanvi@123</div>
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillLogin(5, 'vighnesh.pawar@spit.ac.in', 'csi@123')" style="justify-content: flex-start; text-align: left; padding: 0.45rem 0.65rem; border: 1.5px solid var(--accent-light);">
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.8rem; color: var(--accent);">Vighnesh Pawar (CP)</div>
+                                <div style="font-size: 0.68rem; color: var(--text-muted);">CSI CP • Pass: csi@123</div>
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillLogin(10, 'siddharth.nair@spit.ac.in', 'siddharth@123')" style="justify-content: flex-start; text-align: left; padding: 0.45rem 0.65rem; border: 1.5px solid var(--accent-light);">
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.8rem; color: var(--accent);">Siddharth Nair (VCP)</div>
+                                <div style="font-size: 0.68rem; color: var(--text-muted);">CSI VCP • Pass: siddharth@123</div>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Tier 4: Committee Members & Students -->
+                    <div style="font-size: 0.72rem; font-weight: 800; color: #4e6358; text-transform: uppercase; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.3rem;">
+                        <span>👥 Tier 4: Committee Members & Students</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillLogin(4, 'rushikesh.patil@spit.ac.in', 'rushikesh@123')" style="justify-content: flex-start; text-align: left; padding: 0.45rem 0.65rem;">
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.8rem;">Rushikesh Patil</div>
+                                <div style="font-size: 0.68rem; color: var(--text-muted);">Creatives Head • Pass: rushikesh@123</div>
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillLogin(6, 'arjun.thakur@spit.ac.in', 'arjun@123')" style="justify-content: flex-start; text-align: left; padding: 0.45rem 0.65rem;">
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.8rem;">Arjun Thakur</div>
+                                <div style="font-size: 0.68rem; color: var(--text-muted);">Secretary • Pass: arjun@123</div>
+                            </div>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="quickFillLogin(11, 'priya.sharma@spit.ac.in', 'student@123')" style="justify-content: flex-start; text-align: left; padding: 0.45rem 0.65rem; grid-column: span 2;">
+                            <div>
+                                <div style="font-weight: 800; font-size: 0.8rem;">Priya Sharma</div>
+                                <div style="font-size: 0.68rem; color: var(--text-muted);">Student Attendee • Pass: student@123</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL 3: ADD NEW USER (STUDENT / PROFESSOR / MENTOR / ADMIN)
+         ==================================================================== -->
+    <div id="addUserModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title">Add New User</h3>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Register a Student, Faculty / Professor, Mentor, or Administrator</p>
+                </div>
+                <button class="modal-close" onclick="closeAddUserModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="addUserForm" onsubmit="submitAddUserModal(event)">
+                    <div class="form-group">
+                        <label class="form-label">User Role *</label>
+                        <select id="newUserRoleId" class="form-control" onchange="toggleRollNoRequirement(this.value)" required>
+                            <option value="1">Student</option>
+                            <option value="2">Faculty (Professor)</option>
+                            <option value="4">Mentor</option>
+                            <option value="3">Administrator</option>
+                        </select>
+                        <span class="form-help">Enforces CHECK constraint: role_name IN ('Student', 'Faculty', 'Administrator', 'Mentor')</span>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 0.85rem;">
+                        <label class="form-label">Full Name *</label>
+                        <input type="text" id="newUserName" class="form-control" placeholder="e.g. Dr. Meera Rao or Yashraj Kadam" required>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 0.85rem;">
+                        <label class="form-label">Email Address (@spit.ac.in) *</label>
+                        <input type="email" id="newUserEmail" class="form-control" placeholder="e.g. meera.rao@spit.ac.in" required>
+                        <span class="form-help">Enforces UNIQUE constraint: uk_users_email</span>
+                    </div>
+
+                    <div class="form-group" id="rollNoGroup" style="margin-top: 0.85rem;">
+                        <label class="form-label">Roll Number (10 Digits) <span id="rollNoRequiredStar">*</span></label>
+                        <input type="text" id="newUserRollNo" class="form-control" placeholder="e.g. 2023300045">
+                        <span class="form-help">Required for Students; left NULL for Professors and Mentors</span>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 0.85rem;">
+                        <label class="form-label">Department / Affiliation *</label>
+                        <input type="text" id="newUserDept" class="form-control" placeholder="e.g. Computer Engineering, Information Technology, EXTC" required value="Computer Engineering">
+                    </div>
+
+                    <div class="form-group" style="margin-top: 0.85rem;">
+                        <label class="form-label">Account Password *</label>
+                        <input type="password" id="newUserPassword" class="form-control" placeholder="Default: spit@123" value="spit@123" required>
+                        <span class="form-help">Stored in MySQL users table column: password_hash</span>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem; padding: 0.85rem; background: var(--bg-input); border-radius: var(--radius-sm);">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.86rem; font-weight: 700; cursor: pointer;">
+                            <input type="checkbox" id="assignClubCheckbox" onchange="toggleClubAssignSection(this.checked)">
+                            <span>Also assign to a Club / Committee leadership portfolio</span>
+                        </label>
+                        <div id="clubAssignSection" style="display: none; margin-top: 0.75rem;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                                <div>
+                                    <label class="form-label" style="font-size: 0.75rem;">Club / Committee</label>
+                                    <select id="newUserClubId" class="form-control" style="font-size: 0.82rem;">
+                                        <!-- Injected dynamically -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="form-label" style="font-size: 0.75rem;">Portfolio Role</label>
+                                    <select id="newUserMemberRole" class="form-control" style="font-size: 0.82rem;">
+                                        <option value="Chairperson">Chairperson</option>
+                                        <option value="Secretary">Secretary</option>
+                                        <option value="Creatives Head">Creatives Head</option>
+                                        <option value="Marketing Head">Marketing Head</option>
+                                        <option value="Technical Head">Technical Head</option>
+                                        <option value="Events Head">Events Head</option>
+                                        <option value="Finance Secretary">Finance Secretary</option>
+                                        <option value="Mentor">Mentor</option>
+                                        <option value="Advisor">Advisor</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="padding: 1.25rem 0 0 0; margin-top: 1rem;">
+                        <button type="button" class="btn btn-secondary" onclick="closeAddUserModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create User Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL 4: ASSIGN COMMITTEE MEMBERSHIP / MENTOR
+         ==================================================================== -->
+    <div id="membershipModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title">Assign Committee Portfolio</h3>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Assign a Student or Mentor to a Club leadership role</p>
+                </div>
+                <button class="modal-close" onclick="closeMembershipModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="membershipForm" onsubmit="submitMembershipModal(event)">
+                    <div class="form-group">
+                        <label class="form-label">Select User (Student or Mentor) *</label>
+                        <select id="assignUserId" class="form-control" required>
+                            <!-- Injected dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 0.85rem;">
+                        <label class="form-label">Select Club / Committee *</label>
+                        <select id="assignOrgId" class="form-control" required>
+                            <!-- Injected dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 0.85rem;">
+                        <label class="form-label">Leadership Portfolio Role *</label>
+                        <select id="assignRoleName" class="form-control" required>
+                            <option value="Chairperson">Chairperson</option>
+                            <option value="Secretary">Secretary</option>
+                            <option value="Creatives Head">Creatives Head</option>
+                            <option value="Marketing Head">Marketing Head</option>
+                            <option value="Technical Head">Technical Head</option>
+                            <option value="Events Head">Events Head</option>
+                            <option value="Finance Secretary">Finance Secretary</option>
+                            <option value="Mentor">Mentor</option>
+                            <option value="Advisor">Advisor</option>
+                        </select>
+                        <span class="form-help">Enforces UNIQUE(organization_id, user_id) constraint</span>
+                    </div>
+
+                    <div class="modal-footer" style="padding: 1.25rem 0 0 0; margin-top: 1rem;">
+                        <button type="button" class="btn btn-secondary" onclick="closeMembershipModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Assign Portfolio</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
